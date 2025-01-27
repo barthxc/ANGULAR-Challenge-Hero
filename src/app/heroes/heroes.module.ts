@@ -7,6 +7,7 @@ import { HeroesLayoutComponent } from './layout/heroes-layout/heroes-layout.comp
 import { FavComponent } from './components/fav/fav.component';
 import { HeroPageComponent } from './pages/hero-page/hero-page.component';
 import { HeroesListPageComponent } from './pages/heroes-list-page/heroes-list-page.component';
+import { InputComponent } from './components/input/input.component';
 
 @NgModule({
   declarations: [
@@ -15,6 +16,7 @@ import { HeroesListPageComponent } from './pages/heroes-list-page/heroes-list-pa
     FavComponent,
     HeroPageComponent,
     HeroesListPageComponent,
+    InputComponent,
   ],
   imports: [CommonModule, HeroesRoutingModule],
 })

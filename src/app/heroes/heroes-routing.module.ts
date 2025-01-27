@@ -10,13 +10,20 @@ const routes: Routes = [
     component: HeroesLayoutComponent,
     children: [
       {
-        //Lista de heroes con el buscador
         path: 'list',
         component: HeroesListPageComponent,
       },
       {
         path: ':id',
         component: HeroPageComponent,
+      },
+      {
+        path: 'favorites',
+        component: HeroPageComponent,
+      },
+      {
+        path: '**',
+        redirectTo: 'list',
       },
     ],
   },
