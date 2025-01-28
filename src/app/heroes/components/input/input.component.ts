@@ -10,6 +10,8 @@ import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
 export class InputComponent implements OnInit {
   constructor(private heroesService: HeroesServices) {}
 
+  //TODO: Sacamos el resultado con un new FormControl mejor en vez de sacando el value pro defecto.
+
   public count: number = 0;
 
   private searchTerm = new Subject<string>();
@@ -28,10 +30,14 @@ export class InputComponent implements OnInit {
       .subscribe((term) => {
         if (term.trim()) {
           this.heroesService.searchHeroes(term);
-        } else {
-          //! TODO revisar
-          this.heroesService.getHeroes();
         }
       });
+  }
+
+  search(term?: string): void {
+    if (!term) {
+      return;
+    }
+    this.searchTerm.next(term);
   }
 }
