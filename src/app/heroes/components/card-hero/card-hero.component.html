@@ -1,0 +1,13 @@
+<div class="card">
+  <img
+    [src]="hero.thumbnail.path + '.' + hero.thumbnail.extension"
+    [alt]="'Imagen del Héroes' + hero.name"
+  />
+  <div class="spacer"></div>
+  <div class="info">
+    <p>{{ hero.name | uppercase }}</p>
+    <p (click)="clickHero()">
+      <heroes-fav></heroes-fav>
+    </p>
+  </div>
+</div>

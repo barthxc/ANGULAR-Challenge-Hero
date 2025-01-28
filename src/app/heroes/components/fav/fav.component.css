@@ -11,3 +11,9 @@ div {
   width: 2rem;
   cursor: pointer;
 }
+
+@media (max-width: 300px) {
+  .heart {
+    width: 1.5rem;
+  }
+}

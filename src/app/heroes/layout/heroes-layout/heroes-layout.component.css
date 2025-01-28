@@ -10,3 +10,9 @@
 img {
   height: 3rem;
 }
+
+@media (max-width: 300px) {
+  img {
+    height: 2rem;
+  }
+}

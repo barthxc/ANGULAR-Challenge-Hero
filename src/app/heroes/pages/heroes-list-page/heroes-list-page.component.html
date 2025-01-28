@@ -1,2 +1,14 @@
-<p>heroes-list-page works!</p>
 <hero-input></hero-input>
+<div *ngIf="isLoading; else notLoading">
+  <loading />
+</div>
+
+<ng-template #notLoading>
+  <div *ngIf="!isLoading && heroes.length > 0; else noResult" class="container">
+    <card-hero *ngFor="let hero of heroes" [hero]="hero"></card-hero>
+  </div>
+</ng-template>
+
+<ng-template #noResult>
+  <div></div>
+</ng-template>

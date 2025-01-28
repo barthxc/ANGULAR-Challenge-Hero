@@ -8,6 +8,8 @@ import { FavComponent } from './components/fav/fav.component';
 import { HeroPageComponent } from './pages/hero-page/hero-page.component';
 import { HeroesListPageComponent } from './pages/heroes-list-page/heroes-list-page.component';
 import { InputComponent } from './components/input/input.component';
+import { CardHeroComponent } from './components/card-hero/card-hero.component';
+import { LoadingComponent } from './components/loading/loading.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +19,10 @@ import { InputComponent } from './components/input/input.component';
     HeroPageComponent,
     HeroesListPageComponent,
     InputComponent,
+    CardHeroComponent,
+    LoadingComponent,
   ],
   imports: [CommonModule, HeroesRoutingModule],
+  exports: [LoadingComponent],
 })
 export class HeroesModule {}
