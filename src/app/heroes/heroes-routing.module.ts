@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { HeroesLayoutComponent } from './layout/heroes-layout/heroes-layout.component';
 import { HeroesListPageComponent } from './pages/heroes-list-page/heroes-list-page.component';
 import { HeroPageComponent } from './pages/hero-page/hero-page.component';
+import { FavoritesHeroesPageComponent } from './pages/favorites-heroes-page/favorites-heroes-page.component';
 
 const routes: Routes = [
   {
@@ -13,17 +14,14 @@ const routes: Routes = [
         path: 'list',
         component: HeroesListPageComponent,
       },
+
+      {
+        path: 'favorites',
+        component: FavoritesHeroesPageComponent,
+      },
       {
         path: ':id',
         component: HeroPageComponent,
-      },
-      {
-        path: 'favorites',
-        component: HeroPageComponent,
-      },
-      {
-        path: '**',
-        redirectTo: 'list',
       },
     ],
   },

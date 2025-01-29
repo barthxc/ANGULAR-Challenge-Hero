@@ -1,1 +1,26 @@
-<p>hero-page works!</p>
+<div *ngIf="isLoading; else notLoading">
+  <loading />
+</div>
+
+<ng-template #notLoading>
+  <div class="header">
+    <div class="resume">
+      <img
+        [src]="hero?.thumbnail?.path + '.' + hero?.thumbnail?.extension"
+        [alt]="hero?.name"
+      />
+      <div class="hero-info">
+        <div class="name">
+          <h1>{{ hero?.name }}</h1>
+          <p>♥</p>
+        </div>
+        <p>{{ hero?.description }}</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="list-container">
+    <p>COMICS</p>
+    <comic-card [comicsItem]="comicsItem"></comic-card>
+  </div>
+</ng-template>

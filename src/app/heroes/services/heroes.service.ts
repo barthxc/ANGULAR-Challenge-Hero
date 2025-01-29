@@ -1,9 +1,10 @@
-import { Injectable, signal } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, map, Observable } from 'rxjs';
+import { BehaviorSubject, map, Observable, of, tap } from 'rxjs';
 import { enviroments } from 'src/environments/environments';
-import { ListHeroResponse, Data, Hero } from '../interfaces/interfaces';
 import * as CryptoJS from 'crypto-js';
+import { Hero } from '../interfaces/Hero.interface';
+import { ListHeroResponse } from '../interfaces/ListHeroResponse.interface';
 
 @Injectable({ providedIn: 'root' })
 export class HeroesServices {
@@ -16,11 +17,13 @@ export class HeroesServices {
   private _favHeroes = new BehaviorSubject<Hero[]>([]);
   private _count = new BehaviorSubject<number>(0);
   private _isLoading = new BehaviorSubject<boolean>(false);
+  private _hero = new BehaviorSubject<Hero | null>(null);
 
   heroes$ = this._heroes.asObservable();
   favHeroes$ = this._favHeroes.asObservable();
   count$ = this._count.asObservable();
   isLoading$ = this._isLoading.asObservable();
+  hero$ = this._hero.asObservable();
 
   constructor(private http: HttpClient) {}
 
@@ -49,10 +52,15 @@ export class HeroesServices {
 
   searchHeroes(term: string): void {
     this._isLoading.next(true);
+    this._count.next(0);
     const { hash, ts } = this.getHash();
     const finalUrl = `&ts=${ts}&apikey=${this.publicKey}&hash=${hash}`;
-    const url = `${this.baseUrl}/characters?nameStartWith=${term}${finalUrl}`;
+    const url = `${this.baseUrl}/characters?nameStartsWith=${term}${finalUrl}`;
 
+    if (term === '') {
+      this.getHeroes();
+      return;
+    }
     this.http
       .get<ListHeroResponse>(url)
       .pipe(map((response) => response.data))
@@ -63,20 +71,26 @@ export class HeroesServices {
       });
   }
 
-  getHeroById(): Observable<string> {
-    return this.http.get<string>('eses');
+  getHeroById(id: string): Observable<Hero> {
+    if (!id.trim()) {
+      return of(null as any);
+    }
+
+    this._isLoading.next(true);
+    const { hash, ts } = this.getHash();
+    const finalUrl = `&ts=${ts}&apikey=${this.publicKey}&hash=${hash}`;
+    const url = `${this.baseUrl}/characters/${id}?${finalUrl}`;
+
+    return this.http.get<ListHeroResponse>(url).pipe(
+      map((response) => response.data.results[0]),
+      tap((hero) => {
+        this._hero.next(hero);
+        this._isLoading.next(false);
+      })
+    );
   }
 
-  saveHeroToFav() {
-    localStorage.setItem('heroList', 'hero');
-  }
-  deleteHeroToFav() {
-    localStorage.setItem('heroList', 'hero');
-  }
-
-  getFavHeroes() {
-    localStorage.getItem('heroList');
-  }
+  getComics(id: string) {}
 
   getHash(): { ts: string; hash: string } {
     const ts = new Date().getTime().toString();

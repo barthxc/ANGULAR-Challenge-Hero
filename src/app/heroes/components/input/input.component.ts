@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { HeroesServices } from '../../services/heroes.service';
 import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
+import { FormControl } from '@angular/forms';
+import { Hero } from '../../interfaces/Hero.interface';
 
 @Component({
   selector: 'hero-input',
@@ -10,31 +12,33 @@ import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
 export class InputComponent implements OnInit {
   constructor(private heroesService: HeroesServices) {}
 
-  //TODO: Sacamos el resultado con un new FormControl mejor en vez de sacando el value pro defecto.
-
+  public heroes: Hero[] = [];
   public count: number = 0;
 
+  public searchInput = new FormControl('');
   private searchTerm = new Subject<string>();
 
   ngOnInit(): void {
-    this.heroesService.count$.subscribe((count) => {
-      this.count = count;
-    });
-
-    this.searchTerm
+    this.searchInput.valueChanges
       .pipe(
         debounceTime(300),
         // distinctUntilChanged Se usa para no hacer búsquedas constantes
         distinctUntilChanged()
       )
       .subscribe((term) => {
-        if (term.trim()) {
-          this.heroesService.searchHeroes(term);
-        }
+        this.heroesService.searchHeroes(term!);
       });
+
+    this.heroesService.count$.subscribe((count) => {
+      this.count = count;
+    });
+    this.heroesService.heroes$.subscribe((heroes) => {
+      this.heroes = heroes;
+    });
   }
 
-  search(term?: string): void {
+  searchHero(term?: string): void {
+    console.log('hjey');
     if (!term) {
       return;
     }

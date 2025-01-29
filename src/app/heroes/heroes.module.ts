@@ -10,6 +10,10 @@ import { HeroesListPageComponent } from './pages/heroes-list-page/heroes-list-pa
 import { InputComponent } from './components/input/input.component';
 import { CardHeroComponent } from './components/card-hero/card-hero.component';
 import { LoadingComponent } from './components/loading/loading.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { FavoritesHeroesPageComponent } from './pages/favorites-heroes-page/favorites-heroes-page.component';
+import { ComicCardComponent } from './components/comic-card/comic-card.component';
+import { FavInputComponent } from './components/fav-input/fav-input.component';
 
 @NgModule({
   declarations: [
@@ -21,8 +25,11 @@ import { LoadingComponent } from './components/loading/loading.component';
     InputComponent,
     CardHeroComponent,
     LoadingComponent,
+    FavoritesHeroesPageComponent,
+    ComicCardComponent,
+    FavInputComponent,
   ],
-  imports: [CommonModule, HeroesRoutingModule],
+  imports: [CommonModule, HeroesRoutingModule, ReactiveFormsModule],
   exports: [LoadingComponent],
 })
 export class HeroesModule {}

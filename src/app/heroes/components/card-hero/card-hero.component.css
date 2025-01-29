@@ -12,6 +12,11 @@
   width: 100%;
   height: 250px;
   object-fit: fill;
+  cursor: pointer;
+}
+
+.card:hover > .info {
+  background-color: red;
 }
 
 .spacer {

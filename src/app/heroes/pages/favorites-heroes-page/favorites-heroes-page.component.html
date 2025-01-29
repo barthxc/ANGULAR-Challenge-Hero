@@ -1,0 +1,20 @@
+<fav-input></fav-input>
+
+<div *ngIf="searchResult.length > 0; else showFavHeroes" class="container">
+  <card-hero
+    *ngFor="let searchHero of searchResult"
+    [hero]="searchHero"
+  ></card-hero>
+</div>
+
+<ng-template #showFavHeroes>
+  <div *ngIf="favHeroes.length > 0; else noResult" class="container">
+    <card-hero *ngFor="let favHero of favHeroes" [hero]="favHero"></card-hero>
+  </div>
+</ng-template>
+
+<ng-template #noResult>
+  <div class="no-result">
+    <p>No encontró ningún resultado</p>
+  </div>
+</ng-template>

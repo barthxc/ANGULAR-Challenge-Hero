@@ -9,6 +9,23 @@
 
 img {
   height: 3rem;
+  cursor: pointer;
+}
+
+.count-container-fav {
+  display: flex;
+  flex-direction: row;
+  gap: 0.2rem;
+  align-items: center;
+}
+.count-container-fav p {
+  font-size: 1.3rem;
+}
+
+@media (max-width: 460px) {
+  .bar {
+    padding: 0.7rem 0.7rem 0.7rem 0.7rem;
+  }
 }
 
 @media (max-width: 300px) {

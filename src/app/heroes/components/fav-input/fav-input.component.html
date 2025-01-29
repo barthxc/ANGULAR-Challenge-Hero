@@ -5,11 +5,11 @@
       [formControl]="searchInput"
       onchange=""
       type="text"
-      placeholder="SEARCH A CHARACTER..."
+      placeholder="SEARCH FAV A CHARACTER..."
     />
     <hr />
   </div>
   <div>
-    <p>RESULTS {{ count }}</p>
+    <p>RESULTS {{ searchCount > 0 ? searchCount : FavCount }}</p>
   </div>
 </div>

@@ -1,16 +1,29 @@
-import { Component, Input } from '@angular/core';
-import { Hero } from '../../interfaces/interfaces';
+import { FavHeroesService } from './../../services/fav-heroes.service';
+import { Component, Input, OnInit } from '@angular/core';
+import { Hero } from '../../interfaces/Hero.interface';
+import { FavHero } from '../../interfaces/FavHero.interface';
 
 @Component({
   selector: 'card-hero',
   templateUrl: './card-hero.component.html',
   styleUrls: ['./card-hero.component.css'],
 })
-export class CardHeroComponent {
-  @Input() hero!: Hero;
+export class CardHeroComponent implements OnInit {
+  constructor(private favHeroesService: FavHeroesService) {}
+  @Input() hero!: Hero | FavHero;
+
+  public favHeroes: FavHero[] = [];
+
+  ngOnInit(): void {
+    this.favHeroesService.favHeroes$.subscribe((favHeroes) => {
+      this.favHeroes = favHeroes;
+    });
+  }
 
   clickHero() {
-    console.log(this.hero.name);
-    console.log(this.hero.id);
+    const { id, name, thumbnail } = this.hero;
+    const favHero = { id, name, thumbnail };
+
+    this.favHeroesService.toggleFavHero(favHero);
   }
 }
