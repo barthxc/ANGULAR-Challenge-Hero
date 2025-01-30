@@ -1,3 +1,4 @@
+import { FavHeroesService } from './../../services/fav-heroes.service';
 import { Component, OnInit } from '@angular/core';
 import { HeroesServices } from '../../services/heroes.service';
 import { ActivatedRoute } from '@angular/router';
@@ -10,13 +11,15 @@ import { ComicsData } from '../../interfaces/Comics.interface';
   styleUrls: ['./hero-page.component.css'],
 })
 export class HeroPageComponent implements OnInit {
-  public hero: Hero | null = null;
+  public hero!: Hero;
   public favHeroes: Hero[] = [];
   public isLoading: boolean = false;
   public comicsData: ComicsData[] = [];
+  public isFav: boolean = false;
 
   constructor(
     private heroesService: HeroesServices,
+    private favHeroesService: FavHeroesService,
     private activatedRoute: ActivatedRoute
   ) {}
 
@@ -25,6 +28,7 @@ export class HeroPageComponent implements OnInit {
       this.isLoading = isLoading;
     });
 
+    // switchMap devuelve otro observable y ejecuta el primero, así que con esto utilizo 2 peticiones asincronas simultáneas
     this.activatedRoute.params
       .pipe(
         switchMap(({ id }) => this.heroesService.getHeroById(id)),
@@ -36,12 +40,17 @@ export class HeroPageComponent implements OnInit {
       .subscribe((comics) => {
         this.comicsData = comics;
       });
+    //TODO: ERROR TypeError: Cannot read properties of undefined (reading 'id') ⬇
 
-    // .subscribe((hero) => {
-    //   this.hero = hero;
-    //   this.comicsItem = hero.comics.items;
-    //   //Necesito usar collectionURI para pasarlo a mi función getComics de mi servicio heroesService
-    //   hero.comics.collectionURI;
-    // });
+    this.favHeroesService.favHeroes$.subscribe((favHeroes) => {
+      this.isFav = favHeroes.some((favHero) => favHero.id === this.hero.id);
+    });
+  }
+
+  //TODO REFACTOR entra un heroresponse , void, structuring y lo controlo en el servicio
+  clickHero() {
+    const { id, name, thumbnail } = this.hero;
+    const favHero = { id, name, thumbnail };
+    this.favHeroesService.toggleFavHero(favHero);
   }
 }

@@ -6,15 +6,17 @@
   <div class="header">
     <div class="resume">
       <img
-        [src]="hero?.thumbnail?.path + '.' + hero?.thumbnail?.extension"
-        [alt]="hero?.name"
+        [src]="hero.thumbnail.path + '.' + hero.thumbnail.extension"
+        [alt]="hero.name"
       />
       <div class="hero-info">
         <div class="name">
-          <h1>{{ hero?.name }}</h1>
-          <p>♥</p>
+          <h1>{{ hero.name }}</h1>
+          <span>
+            <heroes-fav (click)="clickHero()" [isMarked]="isFav"></heroes-fav>
+          </span>
         </div>
-        <p>{{ hero?.description }}</p>
+        <p>{{ hero.description }}</p>
       </div>
     </div>
   </div>
