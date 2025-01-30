@@ -14,6 +14,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { FavoritesHeroesPageComponent } from './pages/favorites-heroes-page/favorites-heroes-page.component';
 import { ComicCardComponent } from './components/comic-card/comic-card.component';
 import { FavInputComponent } from './components/fav-input/fav-input.component';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,12 @@ import { FavInputComponent } from './components/fav-input/fav-input.component';
     ComicCardComponent,
     FavInputComponent,
   ],
-  imports: [CommonModule, HeroesRoutingModule, ReactiveFormsModule],
+  imports: [
+    CommonModule,
+    HeroesRoutingModule,
+    ReactiveFormsModule,
+    SharedModule,
+  ],
   exports: [LoadingComponent],
 })
 export class HeroesModule {}

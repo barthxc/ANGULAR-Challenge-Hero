@@ -7,4 +7,6 @@ import { Component, Input } from '@angular/core';
 })
 export class FavComponent {
   @Input() isMarked: boolean = false;
+
+  @Input() isHovered!: boolean;
 }

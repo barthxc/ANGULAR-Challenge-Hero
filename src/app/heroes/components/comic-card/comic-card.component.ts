@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Comics, ComicsItem } from '../../interfaces/Hero.interface';
+import { ComicsData } from '../../interfaces/Comics.interface';
 
 @Component({
   selector: 'comic-card',
@@ -9,5 +9,5 @@ import { Comics, ComicsItem } from '../../interfaces/Hero.interface';
 export class ComicCardComponent {
   constructor() {}
 
-  @Input() comicsItem!: ComicsItem[];
+  @Input() comicsData!: ComicsData[];
 }

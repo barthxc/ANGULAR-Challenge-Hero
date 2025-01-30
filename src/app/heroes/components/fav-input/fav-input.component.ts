@@ -12,15 +12,16 @@ import { FavHeroesService } from '../../services/fav-heroes.service';
 export class FavInputComponent implements OnInit {
   constructor(private favHeroesService: FavHeroesService) {}
 
-  public FavHeroes: FavHero[] = [];
   public FavCount: number = 0;
-  public searchResult: FavHero[] = [];
   public searchCount: number = 0;
 
   public searchInput = new FormControl('');
-  private searchTerm = new Subject<string>();
 
   ngOnInit(): void {
+    this.favHeroesService.favHeroes$.subscribe((heroes) => {
+      this.searchCount = heroes.length;
+    });
+
     this.searchInput.valueChanges
       .pipe(debounceTime(300), distinctUntilChanged())
       .subscribe((term) => {

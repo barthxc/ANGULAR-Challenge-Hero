@@ -5,6 +5,7 @@ import { enviroments } from 'src/environments/environments';
 import * as CryptoJS from 'crypto-js';
 import { Hero } from '../interfaces/Hero.interface';
 import { ListHeroResponse } from '../interfaces/ListHeroResponse.interface';
+import { ComicsData, ListComicsResponse } from '../interfaces/Comics.interface';
 
 @Injectable({ providedIn: 'root' })
 export class HeroesServices {
@@ -14,16 +15,17 @@ export class HeroesServices {
   //! No es mala idea implementar  un servicio para manejar el estado de las variables, pero sigo pensando que al ser pequeño se quede todo en el servicio.
 
   private _heroes = new BehaviorSubject<Hero[]>([]);
-  private _favHeroes = new BehaviorSubject<Hero[]>([]);
   private _count = new BehaviorSubject<number>(0);
   private _isLoading = new BehaviorSubject<boolean>(false);
   private _hero = new BehaviorSubject<Hero | null>(null);
 
+  private _comics = new BehaviorSubject<ComicsData[]>([]);
+
   heroes$ = this._heroes.asObservable();
-  favHeroes$ = this._favHeroes.asObservable();
   count$ = this._count.asObservable();
   isLoading$ = this._isLoading.asObservable();
   hero$ = this._hero.asObservable();
+  comics$ = this._comics.asObservable();
 
   constructor(private http: HttpClient) {}
 
@@ -35,6 +37,7 @@ export class HeroesServices {
 
   getHeroes(limit: number = 50): void {
     this._isLoading.next(true);
+    this._count.next(0);
     const { hash, ts } = this.getHash();
     const finalUrl = `&ts=${ts}&apikey=${this.publicKey}&hash=${hash}`;
 
@@ -90,7 +93,20 @@ export class HeroesServices {
     );
   }
 
-  getComics(id: string) {}
+  getComics(collectionURI: string): Observable<ComicsData[]> {
+    this._isLoading.next(true);
+    const { hash, ts } = this.getHash();
+    const finalUrl = `&ts=${ts}&apikey=${this.publicKey}&hash=${hash}`;
+    const url = `${collectionURI}?${finalUrl}`;
+
+    return this.http.get<ListComicsResponse>(url).pipe(
+      map((response) => response.data.results),
+      tap((comics) => {
+        this._comics.next(comics);
+        this._isLoading.next(false);
+      })
+    );
+  }
 
   getHash(): { ts: string; hash: string } {
     const ts = new Date().getTime().toString();

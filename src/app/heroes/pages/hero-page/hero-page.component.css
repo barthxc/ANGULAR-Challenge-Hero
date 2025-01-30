@@ -32,18 +32,28 @@ img {
 }
 
 .list-container {
-  padding: 5rem 10rem 0rem 10rem;
+  padding: 3rem 10rem 2rem 10rem;
 }
 
 .list-container p {
+  padding-bottom: 3rem;
   font-size: 2rem;
   font-weight: bold;
 }
 
-@media (max-width: 425px) {
-  img {
-    width: 100%;
-    height: 100%;
+::ng-deep comic-card {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  justify-content: flex-start;
+  overflow-x: auto;
+  scrollbar-width: thin; /**firefox?**/
+  scrollbar-color: red transparent; /**firefox?**/
+}
+
+@media (max-width: 1000px) {
+  .list-container {
+    padding: 3rem 5rem 2rem 5rem;
   }
 }
 
@@ -63,5 +73,20 @@ img {
 
   img {
     width: 100%;
+  }
+
+  .list-container {
+    padding: 3rem 2rem 2rem 2rem;
+  }
+}
+
+@media (max-width: 425px) {
+  img {
+    width: 100%;
+    height: 100%;
+  }
+
+  .list-container {
+    padding: 3rem 1rem 1rem 1rem;
   }
 }

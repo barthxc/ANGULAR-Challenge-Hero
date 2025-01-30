@@ -23,12 +23,8 @@ export class FavoritesHeroesPageComponent implements OnInit {
       this.favHeroes = favHeroes;
     });
 
-    this.favHeroesService.searchResult$.subscribe((searchResult) => {
-      this.searchResult = searchResult;
-    });
-
-    this.favHeroesService.searchCount$.subscribe((searchCount) => {
-      this.searchCount = searchCount;
-    });
+    // this.favHeroesService.searchCount$.subscribe((searchCount) => {
+    //   this.searchCount = searchCount;
+    // });
   }
 }

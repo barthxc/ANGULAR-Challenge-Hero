@@ -5,6 +5,7 @@
   stroke-width="1.5"
   [attr.stroke]="isMarked ? 'red' : 'white'"
   class="heart"
+  [ngClass]="{ hover: isHovered }"
 >
   <path
     stroke-linecap="round"

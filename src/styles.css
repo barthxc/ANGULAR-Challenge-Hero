@@ -6,3 +6,17 @@
   padding: 0;
   box-sizing: border-box;
 }
+
+/**TOOLTIP**/
+
+.truncate-text {
+  display: inline-block;
+  max-width: 200px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.truncate-text[title]:hover {
+  cursor: default;
+}

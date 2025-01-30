@@ -1,4 +1,4 @@
-<div class="card">
+<div (mouseover)="isHovered = true" (mouseout)="isHovered = false" class="card">
   <img
     [routerLink]="['/heroes', hero.id]"
     [src]="hero.thumbnail.path + '.' + hero.thumbnail.extension"
@@ -6,9 +6,13 @@
   />
   <div class="spacer"></div>
   <div class="info">
-    <p>{{ hero.name | uppercase }}</p>
+    <p
+      [innerHTML]="
+        hero.name | uppercase | truncate : 6 : '..' : 'p' : ['truncate-text']
+      "
+    ></p>
     <p (click)="clickHero()">
-      <heroes-fav></heroes-fav>
+      <heroes-fav [isMarked]="isFav" [isHovered]="isHovered"></heroes-fav>
     </p>
   </div>
 </div>

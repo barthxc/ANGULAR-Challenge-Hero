@@ -4,6 +4,10 @@
   cursor: pointer;
 }
 
+.hover {
+  color: black;
+}
+
 @media (max-width: 300px) {
   .heart {
     width: 1.5rem;

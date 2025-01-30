@@ -8,15 +8,16 @@ import { FavHero } from '../interfaces/FavHero.interface';
 export class FavHeroesService {
   constructor() {}
 
-  private _favHeroes = new BehaviorSubject<FavHero[]>([]);
-  private _favCount = new BehaviorSubject<number>(0);
-  private _searchResult = new BehaviorSubject<FavHero[]>([]);
-  private _searchCount = new BehaviorSubject<number>(0);
+  private _favHeroes = new BehaviorSubject<FavHero[]>(
+    JSON.parse(localStorage.getItem('favHeroes') || '[]')
+  );
+
+  private _favCount = new BehaviorSubject<number>(
+    JSON.parse(localStorage.getItem('favHeroes') || '[]').length
+  );
 
   favHeroes$ = this._favHeroes.asObservable();
   favCount$ = this._favCount.asObservable();
-  searchResult$ = this._searchResult.asObservable();
-  searchCount$ = this._searchCount.asObservable();
 
   toggleFavHero(hero: FavHero): void {
     const exists = this._favHeroes.value.some((h) => h.id === hero.id);
@@ -30,32 +31,50 @@ export class FavHeroesService {
 
   saveHeroToFav(hero: FavHero): void {
     const updatedHeroes = [...this._favHeroes.value, hero];
+    localStorage.setItem('favHeroes', JSON.stringify(updatedHeroes));
 
     this._favHeroes.next(updatedHeroes);
     this._favCount.next(updatedHeroes.length);
   }
 
   deleteHeroToFav(hero: FavHero): void {
-    const updatedHeroes = this._favHeroes.value.filter((h) => h.id !== hero.id);
+    //Actualización de LS sin modificar el BehaviorS
+    const LocalStorageHeroes: FavHero[] = JSON.parse(
+      localStorage.getItem('favHeroes') || '[]'
+    );
 
+    const updatedLocalStorage = LocalStorageHeroes.filter((h) => {
+      return h.id !== hero.id;
+    });
+    localStorage.setItem('favHeroes', JSON.stringify(updatedLocalStorage));
+
+    //Actualización del Behavior sin referenciar a LS
+    const updatedHeroes = this._favHeroes.value.filter((h) => h.id !== hero.id);
     this._favHeroes.next(updatedHeroes);
-    this._favCount.next(updatedHeroes.length);
+
+    this._favCount.next(
+      JSON.parse(localStorage.getItem('favHeroes') || '[]').length
+    );
   }
 
   searchFavHeroes(term: string): void {
-    this._searchCount.next(0);
-    const favHeroes = this._favHeroes.value;
+    //! Filtrar por el LocalStorage y no por el el BehaviorSubject ya que no puedes filtrar sobre el filtro cuando vas elimandno carácteres.
+
+    const favHeroes = JSON.parse(
+      localStorage.getItem('favHeroes') || '[]'
+    ) as FavHero[];
 
     if (term === '') {
-      this._searchResult.next([]);
+      this._favHeroes.next(
+        JSON.parse(localStorage.getItem('favHeroes') || '[]')
+      );
       return;
     }
 
-    const filteredHeroes = favHeroes.filter((heroe) => {
-      heroe.name.toLowerCase().startsWith(term.toLowerCase());
-    });
+    const filteredHeroes = favHeroes.filter((heroe) =>
+      heroe.name.toLowerCase().startsWith(term.toLowerCase())
+    );
 
-    this._searchResult.next(filteredHeroes);
-    this._searchCount.next(filteredHeroes.length);
+    this._favHeroes.next(filteredHeroes);
   }
 }
