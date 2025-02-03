@@ -33,26 +33,38 @@ export class HeroesServices {
   private privateKey = enviroments.private_key;
   private publicKey = enviroments.public_key;
 
+  //BACKUP
+  public heroesBackup: Hero[] = [];
+
   //? Petición : hash = md5(ts + privateKey + publicKey)
 
   getHeroes(limit: number = 50): void {
     this._isLoading.next(true);
     this._count.next(0);
+
     const { hash, ts } = this.getHash();
     const finalUrl = `&ts=${ts}&apikey=${this.publicKey}&hash=${hash}`;
 
     const url = `${this.baseUrl}/characters?limit=${limit}${finalUrl}`;
+
+    if (this.heroesBackup.length > 0) {
+      this._heroes.next(this.heroesBackup);
+      this._isLoading.next(false);
+      return;
+    }
 
     this.http
       .get<ListHeroResponse>(url)
       .pipe(map((response) => response.data))
       .subscribe((response) => {
         this._heroes.next(response.results);
+        this.heroesBackup = response.results;
         this._count.next(response.count);
         this._isLoading.next(false);
       });
   }
 
+  //TODO:  Dividir en varias funciones.
   searchHeroes(term: string): void {
     this._isLoading.next(true);
     this._count.next(0);
@@ -61,7 +73,8 @@ export class HeroesServices {
     const url = `${this.baseUrl}/characters?nameStartsWith=${term}${finalUrl}`;
 
     if (term === '') {
-      this.getHeroes();
+      this._heroes.next(this.heroesBackup);
+      this._isLoading.next(false);
       return;
     }
     this.http

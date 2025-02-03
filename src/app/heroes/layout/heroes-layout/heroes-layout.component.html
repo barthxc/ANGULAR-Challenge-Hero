@@ -1,9 +1,5 @@
 <div class="bar">
-  <img
-    [routerLink]="['/heroes/list']"
-    src="/assets/logo.png"
-    alt="Marvel Logo"
-  />
+  <img [routerLink]="['/heroes']" src="/assets/logo.png" alt="Marvel Logo" />
   <div class="count-container-fav">
     <heroes-fav [routerLink]="['favorites']" [isMarked]="true"></heroes-fav>
     <p>{{ favCount }}</p>

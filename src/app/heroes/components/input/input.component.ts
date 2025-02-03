@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { HeroesServices } from '../../services/heroes.service';
 import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
 import { FormControl } from '@angular/forms';
@@ -11,6 +11,8 @@ import { Hero } from '../../interfaces/Hero.interface';
 })
 export class InputComponent implements OnInit {
   constructor(private heroesService: HeroesServices) {}
+
+  @Input() type!: string;
 
   public heroes: Hero[] = [];
   public count: number = 0;
@@ -38,7 +40,6 @@ export class InputComponent implements OnInit {
   }
 
   searchHero(term?: string): void {
-    console.log('hjey');
     if (!term) {
       return;
     }

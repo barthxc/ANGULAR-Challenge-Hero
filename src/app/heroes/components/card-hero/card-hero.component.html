@@ -11,8 +11,8 @@
         hero.name | uppercase | truncate : 6 : '..' : 'p' : ['truncate-text']
       "
     ></p>
-    <p (click)="clickHero()">
+    <span (click)="clickHero()">
       <heroes-fav [isMarked]="isFav" [isHovered]="isHovered"></heroes-fav>
-    </p>
+    </span>
   </div>
 </div>

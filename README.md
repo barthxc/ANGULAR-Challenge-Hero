@@ -5,12 +5,7 @@
 - Levantar el proyecto:
 
 ```js
-// Se puede utilizar varios comandos.
-//  El primero:
 ng serve
-
-// El Segundo:
-
 ```
 
 - Estructura:
@@ -53,18 +48,27 @@ Antes de nada tenemos que tener en cuenta que para acceder a la API se debe acce
 
 La función getHeroes no devuelve nada tiene un término de búsqueda que pasar por variable el cual es opcional ya que está igualado a 10. Se trata de la cantidad de registros que queremos.
 
-**SE HA PUESTO A 10 PARA QUE NO TARDE TANTO LA PETICIÓN** Pero en el ejercicio pone que es un mínimo de 50.
-
-Antes de cualquier ejecución modifcilo los valores de mis observables que me ayudarán a que el usuario disfrute más de la espera :
+Antes de cualquier ejecución modifilo los valores de mis observables que me ayudarán a que el usuario vea el componente loading:
 
 - Reseteando el contador a 0 por búsqueda
 - Cambiando el loading de true a false dependiendo del estado de la petición
 
 Cuando hago la petición, recojo la respuesta y en vez de retornarla igualo el resultado de la propia petición a mis observables al subscribirme a la petición. Así tengo acceso a dichos datos en toda la aplicación al inyectar y ejecutar la función getHeroes.
 
-Este proceso es muy similar en casi todas las funciones creadas.
+Todo el proceso donde el contador pasa a 0 y el loading actua se encuentra en todas las peticiones asincronas.
 
-//TODO Las demás funciones
+Uno de los apartados más importantes a tener en cuenta es que uso una variable donde almaceno los heroes de la primera petición.
+
+De tal forma que al poner el input del término de búsqueda a 0.
+No tengo que volver a hacer la petición de búsqueda de mis 50 héroes.
+
+Además de ahorrarme tener que hacer peticiones.
+
+Almaceno distintos datos en el localStorage para no teenr que hacer peticiones independientes por héroes. Como para la persistencia necesito un ID pero para mostrar los héroes favoritos necesito más información como el nombre y la imagen. Almaceno toda la información en el LocalStorage para no tener que hacer dichas peticiones.
+
+En la página de mostrar un solo héroe rescato el params de el id de la propia ruta para hacer la petición del héroe por Id. Recupero el héroe y un Id de cómics para hacer posteriormente una segunda petición de los cómics del Héroe para moder mostrarlos también:
+
+Esto lo hago en 2 switchMap para devolver un observable nuevo. Después del primero.
 
 # DOCUMENTACIÓN PDF
 
